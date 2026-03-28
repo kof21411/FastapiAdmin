@@ -34,6 +34,15 @@
 
 > **设计初心**: 以模块化、松耦合为核心，追求丰富的功能模块、简洁易用的接口、详尽的开发文档和便捷的维护方式。通过统一框架和组件，降低技术选型成本，遵循开发规范和设计模式，构建强大的代码分层模型，搭配完善的本地中文化支持，专为团队和企业开发场景量身定制。
 
+## 📖 新手从这儿开始
+
+| 你想…… | 去看 |
+|--------|------|
+| **最快在本地跑起来** | 下文 **「快速开始」** → **「第一次本地运行（按顺序）」**（含复制环境文件、迁移、启动前后端） |
+| **先了解项目能做什么** | **「内置功能模块」**、**「演示环境」**（账号密码） |
+| **做二次开发 / 插件** | **「二开教程」**；后端目录与命令见 [**backend/README.md**](backend/README.md) |
+| **接口文档** | 后端启动后浏览器打开 `http://<后端地址>/docs`（Swagger）或 `/redoc` |
+
 ## 🎯 核心优势
 
 | 优势 | 描述 |
@@ -91,6 +100,10 @@ FastapiAdmin
 | **部署** | Docker / Nginx / Docker Compose | 容器化部署方案 |
 | **智能体框架** | Langchain / Langgraph | 基于Langchain和Langgraph的智能体框架 |
 
+## 📐 后端约定（日期与序列化）
+
+使用 **Pydantic v2** 与 **PostgreSQL（asyncpg）** 时：ORM 写入需要 Python 原生日期时间，JSON 输出需要可序列化字符串。项目通过 `DateStr` / `TimeStr` / `DateTimeStr`（`backend/app/core/validator.py`）的 **`PlainSerializer(..., when_used='json')`** 区分两种场景；统一响应见 `backend/app/common/response.py` 中的 **`jsonable_encoder`**；写入 Redis 时请使用 **`model_dump(mode='json')`** 再序列化。细节见 [backend/README.md](backend/README.md) 中与根文档一致的说明。
+
 ## 📌 内置功能模块
 
 | 模块 | 功能 | 描述 |
@@ -121,16 +134,26 @@ FastapiAdmin
 
 ## 🚀 快速开始
 
+### 第一次本地运行（按顺序）
+
+1. **安装运行时**：Python ≥ 3.10、Node.js ≥ 20、[pnpm](https://pnpm.io/zh/)（前端包管理）、本机 **MySQL 或 PostgreSQL**（或改用 SQLite 需在 `backend/env/.env.dev` 中配置）、**Redis**（与 `.env.dev` 中一致）。
+2. **获取代码**：见下方「获取代码」。
+3. **配置环境变量**：将 `backend/env/.env.dev.example` 复制为 `backend/env/.env.dev`，将 `frontend/.env.development.example` 复制为 `frontend/.env.development`，按注释填写 **数据库连接、Redis、JWT 密钥** 等（须先在本机创建空数据库）。
+4. **安装后端依赖并迁移**：进入 `backend`，推荐使用 `uv sync`（见下）；然后执行 **`uv run main.py upgrade --env=dev`**（或 `python main.py upgrade --env=dev`）**应用数据库表结构**；首次部署不可跳过。
+5. **启动后端**：`uv run main.py run --env=dev`（默认开发环境）。
+6. **安装前端依赖并启动**：进入 `frontend` 执行 `pnpm install` 与 `pnpm run dev`。
+7. **打开浏览器**：前端地址见终端输出（端口由 `frontend/.env.development` 中 `VITE_APP_PORT` 决定）；使用管理员账号登录（与 [演示环境](#-演示环境) 一致，若你导入的是初始 SQL 则以后台为准）。
+
 ### 环境要求
 
 | 类型 | 技术栈 | 版本 |
 |------|--------|------|
-| 后端 | Python | 3.12 ≥ 3.10 |
+| 后端 | Python | ≥ 3.10（推荐 3.12） |
 | 后端 | FastAPI | 0.109+ |
 | 前端 | Node.js | ≥ 20.0 |
 | 前端 | Vue3 | 3.3+ |
-| 数据库 | MySQL/PostgreSQL | 8.0+/17+ |
-| 缓存 | Redis | 7.0+ |
+| 数据库 | MySQL / PostgreSQL / SQLite | 见 `backend/env` 配置 |
+| 缓存 | Redis | 建议 6.x / 7.x（与 `.env` 一致） |
 
 ### 获取代码
 
@@ -147,44 +170,51 @@ git clone https://github.com/fastapiadmin/FastapiAdmin.git
 
 ### 后端启动
 
-#### 使用 uv 管理项目（推荐）
+#### 使用 uv（推荐，与 `backend/pyproject.toml` 一致）
 
 ```bash
-# 进入后端工程目录
 cd backend
-# 使用 uv 安装依赖
-uv add -r requirements.txt
-# 启动后端服务：启动之前保证mysql中创建好了数据库、redis服务
-uv run main.py run
-# 或指定环境
-uv run main.py run --env=dev or --env=prod
+# 创建虚拟环境并安装依赖（等价于根据 pyproject 安装）
+uv sync
+# 首次或模型变更后：应用数据库迁移（不可省略）
+uv run main.py upgrade --env=dev
+# 启动：请先保证数据库已创建、Redis 已启动且与 .env.dev 一致
+uv run main.py run --env=dev
+# 生产环境示例
+# uv run main.py run --env=prod
 ```
 
-#### 使用传统 pip 方式
+> 若未使用 `uv`，也可用 `pip install -r requirements.txt` 安装依赖，再用 `python main.py upgrade --env=dev` 与 `python main.py run --env=dev`。
+
+#### 使用传统 pip / venv
 
 ```bash
-# 进入后端工程目录
 cd backend
-# 安装依赖
-pip3 install -r requirements.txt
-# 启动后端服务：启动之前保证mysql中创建好了数据库、redis服务
-python main.py run
-# 或指定环境
-python main.py run --env=dev or --env=prod
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+python main.py upgrade --env=dev
+python main.py run --env=dev
 ```
 
 ### 前端启动
 
 ```bash
-# 进入前端工程目录
 cd frontend
-# 安装依赖
 pnpm install
-# 启动开发服务器
 pnpm run dev
 # 构建生产版本
 pnpm run build
 ```
+
+### 启动后访问
+
+| 服务 | 说明 |
+|------|------|
+| 后端 API | 默认 `http://127.0.0.1:8000`（具体端口以启动日志与 `backend/env/.env.dev` 为准） |
+| Swagger | `http://<后端地址>/docs` |
+| 前端 Web | 终端中 Vite 输出的本地地址（端口见 `frontend/.env.development` 的 `VITE_APP_PORT`） |
 
 ### 🐳 Docker 部署
 
@@ -463,7 +493,7 @@ A：使用 `python main.py revision --env=dev` 命令生成迁移文件。
 A：使用 `python main.py upgrade --env=dev` 命令应用迁移。
 
 #### Q：如何启动开发服务器？
-A：使用 `python main.py run --env=dev` 命令启动开发服务器。
+A：在 `backend` 目录执行 `uv run main.py run --env=dev`（或 `python main.py run --env=dev`）。**首次**须先完成依赖安装与 `upgrade` 迁移，见上文 **「第一次本地运行」**。
 
 #### Q：如何构建前端生产版本？
 A：使用 `pnpm run build` 命令构建前端生产版本。

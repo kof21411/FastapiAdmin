@@ -465,11 +465,11 @@ import { useUserStore } from "@/store/index";
 import { greetings } from "@/utils/common";
 import NoticeAPI, { NoticeTable } from "@/api/module_system/notice";
 import LogAPI, { type LogTable } from "@/api/module_system/log";
-import type { SchedulerJob } from "@/api/module_task/job";
+import type { SchedulerJob } from "@/api/module_task/cronjob/job";
 import ServerAPI, { type ServerInfo } from "@/api/module_monitor/server";
 import OnlineAPI from "@/api/module_monitor/online";
 import { UserAPI } from "@/api/module_system/user";
-import JobAPI from "@/api/module_task/job";
+import JobAPI from "@/api/module_task/cronjob/job";
 import { AiChatAPI } from "@/api/module_ai/chat";
 import { ApplicationAPI } from "@/api/module_application/myapp";
 import {

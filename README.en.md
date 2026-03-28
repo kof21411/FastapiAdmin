@@ -34,6 +34,15 @@ English | [简体中文](./README.md)
 
 > **Design Philosophy**: With modularity and loose coupling at its core, it pursues rich functional modules, simple and easy-to-use interfaces, detailed development documentation, and convenient maintenance methods. By unifying frameworks and components, it reduces the cost of technology selection, follows development specifications and design patterns, builds a powerful code hierarchical model, and comes with comprehensive local language support. It is specifically tailored for team and enterprise development scenarios.
 
+## 📖 Start Here (New Users)
+
+| I want to… | Go to |
+|------------|--------|
+| **Run the project locally ASAP** | Section **Quick Start** → **“First-time local setup (in order)”** (env files, migrations, backend + frontend) |
+| **See what the project offers** | **Built-in Functional Modules**, **Demo Environment** (credentials) |
+| **Extend / plugin development** | **Secondary Development Tutorial**; backend layout and CLI: [**backend/README.md**](backend/README.md) |
+| **API docs** | After the backend is up: `http://<backend-host>/docs` (Swagger) or `/redoc` |
+
 ## 🎯 Core Advantages
 
 | Advantage | Description |
@@ -91,6 +100,10 @@ FastapiAdmin
 | **Deployment** | Docker / Nginx / Docker Compose | Containerized deployment solution |
 | **Intelligent Agent Framework** | Langchain / Langgraph | Intelligent agent framework based on Langchain and Langgraph |
 
+## 📐 Backend Conventions (Dates & Serialization)
+
+With **Pydantic v2** and **PostgreSQL (asyncpg)**, ORM writes expect native Python date/time types; JSON responses need serializable strings. The project uses **`PlainSerializer(..., when_used='json')`** on `DateStr` / `TimeStr` / `DateTimeStr` in `backend/app/core/validator.py`; unified responses use **`jsonable_encoder`** in `backend/app/common/response.py`; when writing to Redis, use **`model_dump(mode='json')`** before `json.dumps`. See [backend/README.md](backend/README.md) for alignment with the root README.
+
 ## 📌 Built-in Functional Modules
 
 | Module | Features | Description |
@@ -119,16 +132,26 @@ FastapiAdmin
 
 ## 🚀 Quick Start
 
+### First-time local setup (in order)
+
+1. **Install runtimes**: Python ≥ 3.10, Node.js ≥ 20, [pnpm](https://pnpm.io/), local **MySQL or PostgreSQL** (or SQLite if configured in `backend/env/.env.dev`), and **Redis** matching your `.env.dev`.
+2. **Clone the repo**: see “Get the Code” below.
+3. **Env files**: copy `backend/env/.env.dev.example` → `backend/env/.env.dev`, and `frontend/.env.development.example` → `frontend/.env.development`; fill in **DB, Redis, JWT secret**, etc. Create an empty database first.
+4. **Backend deps + migrations**: `cd backend`, run **`uv sync`** (recommended), then **`uv run main.py upgrade --env=dev`** to **apply the schema** (required on first run).
+5. **Start backend**: `uv run main.py run --env=dev`.
+6. **Frontend**: `cd frontend`, `pnpm install`, `pnpm run dev`.
+7. **Browser**: use the URL printed by Vite (port from `VITE_APP_PORT` in `frontend/.env.development`); log in with the admin account (same as [Demo Environment](#-demo-environment) unless you changed seed data).
+
 ### Environment Requirements
 
 | Type | Technology Stack | Version |
 |------|------------------|---------|
-| Backend | Python | 3.12 ≥ 3.10 |
+| Backend | Python | ≥ 3.10 (3.12 recommended) |
 | Backend | FastAPI | 0.109+ |
 | Frontend | Node.js | ≥ 20.0 |
 | Frontend | Vue3 | 3.3+ |
-| Database | MySQL/PostgreSQL | 8.0+/17+ |
-| Cache | Redis | 7.0+ |
+| Database | MySQL / PostgreSQL / SQLite | As in `backend/env` |
+| Cache | Redis | 6.x / 7.x (match `.env`) |
 
 ### Get the Code
 
@@ -145,44 +168,46 @@ git clone https://github.com/fastapiadmin/FastapiAdmin.git
 
 ### Backend Setup
 
-#### Using uv to manage the project (Recommended)
+#### Using uv (recommended, matches `backend/pyproject.toml`)
 
 ```bash
-# Navigate to the backend directory
 cd backend
-# Install dependencies using uv
-uv add -r requirements.txt
-# Start the backend service: ensure that MySQL and Redis are running
-uv run main.py run
-# Or specify environment
-uv run main.py run --env=dev or --env=prod
+uv sync
+uv run main.py upgrade --env=dev
+uv run main.py run --env=dev
+# uv run main.py run --env=prod
 ```
 
-#### Using traditional pip method
+> Without `uv`: `pip install -r requirements.txt`, then `python main.py upgrade --env=dev` and `python main.py run --env=dev`.
+
+#### Using pip / venv
 
 ```bash
-# Navigate to the backend directory
 cd backend
-# Install dependencies
-pip3 install -r requirements.txt
-# Start the backend service: ensure that MySQL and Redis are running
-python main.py run
-# Or specify environment
-python main.py run --env=dev or --env=prod
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+# macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+python main.py upgrade --env=dev
+python main.py run --env=dev
 ```
 
 ### Frontend Setup
 
 ```bash
-# Navigate to the frontend directory
 cd frontend
-# Install dependencies
 pnpm install
-# Start the development server
 pnpm run dev
-# Build for production
 pnpm run build
 ```
+
+### After startup
+
+| Service | Notes |
+|---------|--------|
+| Backend API | Default often `http://127.0.0.1:8000` (check logs and `backend/env/.env.dev`) |
+| Swagger | `http://<backend-host>/docs` |
+| Web UI | URL printed by Vite (`VITE_APP_PORT` in `frontend/.env.development`) |
 
 ### 🐳 Docker Deployment
 
@@ -474,7 +499,7 @@ A: Use the command `python main.py revision --env=dev` to generate migration fil
 A: Use the command `python main.py upgrade --env=dev` to apply migrations.
 
 #### Q: How to start the development server?
-A: Use the command `python main.py run --env=dev` to start the development server.
+A: From `backend`, run `uv run main.py run --env=dev` (or `python main.py run --env=dev`). On **first run**, install dependencies and run `upgrade` migrations first—see **“First-time local setup”** above.
 
 #### Q: How to build the frontend production version?
 A: Use the command `pnpm run build` to build the frontend production version.

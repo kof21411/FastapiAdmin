@@ -21,7 +21,7 @@ from .schema import (
 )
 from .service import WorkflowService
 
-WorkflowRouter = APIRouter(route_class=OperationLogRoute, prefix="/workflow", tags=["工作流"])
+WorkflowRouter = APIRouter(route_class=OperationLogRoute, prefix="/workflow/definition", tags=["工作流"])
 
 
 @WorkflowRouter.get(
@@ -32,7 +32,7 @@ WorkflowRouter = APIRouter(route_class=OperationLogRoute, prefix="/workflow", ta
 )
 async def get_workflow_detail_controller(
     id: Annotated[int, Path(description="工作流ID")],
-    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:detail"]))],
+    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:definition:detail"]))],
 ) -> JSONResponse:
     result_dict = await WorkflowService.get_workflow_detail_service(auth=auth, id=id)
     log.info(f"获取工作流详情成功 {id}")
@@ -48,7 +48,7 @@ async def get_workflow_detail_controller(
 async def get_workflow_list_controller(
     page: Annotated[PaginationQueryParam, Depends()],
     search: Annotated[WorkflowQueryParam, Depends()],
-    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:query"]))],
+    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:definition:query"]))],
 ) -> JSONResponse:
     result_dict_list = await WorkflowService.get_workflow_list_service(
         auth=auth, search=search, order_by=page.order_by
@@ -70,7 +70,7 @@ async def get_workflow_list_controller(
 )
 async def create_workflow_controller(
     data: WorkflowCreateSchema,
-    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:create"]))],
+    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:definition:create"]))],
 ) -> JSONResponse:
     result_dict = await WorkflowService.create_workflow_service(auth=auth, data=data)
     log.info("创建工作流成功")
@@ -86,7 +86,7 @@ async def create_workflow_controller(
 async def update_workflow_controller(
     id: Annotated[int, Path(description="工作流ID")],
     data: WorkflowUpdateSchema,
-    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:update"]))],
+    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:definition:update"]))],
 ) -> JSONResponse:
     result_dict = await WorkflowService.update_workflow_service(auth=auth, id=id, data=data)
     log.info(f"更新工作流成功 {id}")
@@ -101,7 +101,7 @@ async def update_workflow_controller(
 )
 async def delete_workflow_controller(
     ids: Annotated[list[int], Body(description="ID列表")],
-    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:delete"]))],
+    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:definition:delete"]))],
 ) -> JSONResponse:
     await WorkflowService.delete_workflow_service(auth=auth, ids=ids)
     log.info(f"删除工作流成功 {ids}")
@@ -116,7 +116,7 @@ async def delete_workflow_controller(
 )
 async def publish_workflow_controller(
     id: Annotated[int, Path(description="工作流ID")],
-    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:update"]))],
+    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:definition:update"]))],
     body: Annotated[WorkflowPublishSchema | None, Body()] = None,
 ) -> JSONResponse:
     result_dict = await WorkflowService.publish_workflow_service(auth=auth, id=id, body=body)
@@ -132,7 +132,7 @@ async def publish_workflow_controller(
 )
 async def execute_workflow_controller(
     body: WorkflowExecuteSchema,
-    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:execute"]))],
+    auth: Annotated[AuthSchema, Depends(AuthPermission(["module_task:workflow:definition:execute"]))],
 ) -> JSONResponse:
     result_dict = await WorkflowService.execute_workflow_service(auth=auth, body=body)
     log.info(f"执行工作流完成 workflow_id={body.workflow_id}")

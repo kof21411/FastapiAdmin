@@ -30,7 +30,7 @@
             </div>
             <div class="status-actions">
               <el-button
-                v-hasPerm="['module_task:job:scheduler']"
+                v-hasPerm="['module_task:cronjob:job:scheduler']"
                 type="success"
                 icon="VideoPlay"
                 :disabled="schedulerStatus.status !== '停止'"
@@ -39,7 +39,7 @@
                 启动
               </el-button>
               <el-button
-                v-hasPerm="['module_task:job:scheduler']"
+                v-hasPerm="['module_task:cronjob:job:scheduler']"
                 type="warning"
                 icon="VideoPause"
                 :disabled="schedulerStatus.status !== '运行中'"
@@ -48,7 +48,7 @@
                 暂停
               </el-button>
               <el-button
-                v-hasPerm="['module_task:job:scheduler']"
+                v-hasPerm="['module_task:cronjob:job:scheduler']"
                 type="primary"
                 icon="RefreshRight"
                 :disabled="schedulerStatus.status !== '暂停'"
@@ -57,7 +57,7 @@
                 恢复
               </el-button>
               <el-button
-                v-hasPerm="['module_task:job:scheduler']"
+                v-hasPerm="['module_task:cronjob:job:scheduler']"
                 type="danger"
                 icon="SwitchButton"
                 :disabled="schedulerStatus.status === '停止'"
@@ -66,7 +66,7 @@
                 关闭
               </el-button>
               <el-button
-                v-hasPerm="['module_task:job:task']"
+                v-hasPerm="['module_task:cronjob:job:task']"
                 type="danger"
                 icon="Delete"
                 :disabled="schedulerStatus.job_count === 0"
@@ -75,7 +75,7 @@
                 清空任务
               </el-button>
               <el-button
-                v-hasPerm="['module_task:job:query']"
+                v-hasPerm="['module_task:cronjob:job:query']"
                 type="info"
                 icon="Monitor"
                 @click="handleOpenConsole"
@@ -83,7 +83,7 @@
                 控制台
               </el-button>
               <el-button
-                v-hasPerm="['module_task:job:scheduler']"
+                v-hasPerm="['module_task:cronjob:job:scheduler']"
                 type="primary"
                 icon="Refresh"
                 @click="handleSyncJobs"
@@ -91,7 +91,7 @@
                 同步
               </el-button>
               <el-button
-                v-hasPerm="['module_task:job:update']"
+                v-hasPerm="['module_task:cronjob:job:update']"
                 type="warning"
                 icon="Refresh"
                 @click="refreshMain"
@@ -177,7 +177,7 @@
                   <div class="job-card-footer">
                     <el-button
                       v-if="job.status === '暂停中'"
-                      v-hasPerm="['module_task:job:task']"
+                      v-hasPerm="['module_task:cronjob:job:task']"
                       type="primary"
                       size="small"
                       icon="VideoPlay"
@@ -187,7 +187,7 @@
                     </el-button>
                     <el-button
                       v-if="job.status === '运行中'"
-                      v-hasPerm="['module_task:job:task']"
+                      v-hasPerm="['module_task:cronjob:job:task']"
                       type="warning"
                       size="small"
                       icon="VideoPause"
@@ -197,7 +197,7 @@
                     </el-button>
                     <el-button
                       v-if="job.status !== '已停止' && job.status !== '未知'"
-                      v-hasPerm="['module_task:job:task']"
+                      v-hasPerm="['module_task:cronjob:job:task']"
                       type="success"
                       size="small"
                       icon="CaretRight"
@@ -207,7 +207,7 @@
                     </el-button>
                     <el-button
                       v-if="job.status !== '未知'"
-                      v-hasPerm="['module_task:job:task']"
+                      v-hasPerm="['module_task:cronjob:job:task']"
                       type="danger"
                       size="small"
                       icon="Close"
@@ -216,7 +216,7 @@
                       移除
                     </el-button>
                     <el-button
-                      v-hasPerm="['module_task:job:query']"
+                      v-hasPerm="['module_task:cronjob:job:query']"
                       type="info"
                       size="small"
                       icon="List"
@@ -334,7 +334,7 @@
                 <el-table-column label="操作" min-width="80" fixed="right">
                   <template #default="scope">
                     <el-button
-                      v-hasPerm="['module_task:job:delete']"
+                      v-hasPerm="['module_task:cronjob:job:delete']"
                       type="danger"
                       size="small"
                       link
@@ -372,7 +372,7 @@ import JobAPI, {
   SchedulerJob,
   JobLogPageQuery,
   JobLogTable,
-} from "@/api/module_task/job";
+} from "@/api/module_task/cronjob/job";
 import PageSearch from "@/components/CURD/PageSearch.vue";
 import PageContent from "@/components/CURD/PageContent.vue";
 import EnhancedDialog from "@/components/CURD/EnhancedDialog.vue";
@@ -393,7 +393,7 @@ const schedulerStatus = ref<SchedulerStatus>({
 });
 
 const searchConfig = reactive<ISearchConfig>({
-  permPrefix: "module_task:job",
+  permPrefix: "module_task:cronjob:job",
   colon: true,
   isExpandable: false,
   showNumber: 2,
@@ -420,7 +420,7 @@ const searchConfig = reactive<ISearchConfig>({
 });
 
 const contentConfig = reactive<IContentConfig>({
-  permPrefix: "module_task:job",
+  permPrefix: "module_task:cronjob:job",
   cols: [],
   hideColumnFilter: true,
   showToolbar: false,
@@ -454,7 +454,7 @@ const jobStateVisible = ref(false);
 const jobStateData = ref<any>(null);
 
 const logSearchConfig = reactive<ISearchConfig>({
-  permPrefix: "module_task:job",
+  permPrefix: "module_task:cronjob:job",
   colon: true,
   isExpandable: false,
   showNumber: 2,
@@ -490,7 +490,7 @@ const logSearchConfig = reactive<ISearchConfig>({
 });
 
 const logContentConfig = reactive<IContentConfig>({
-  permPrefix: "module_task:job",
+  permPrefix: "module_task:cronjob:job",
   cols: [],
   hideColumnFilter: true,
   toolbar: ["delete"],

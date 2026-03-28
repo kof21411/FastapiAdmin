@@ -96,7 +96,7 @@ class Demo01CRUD(CRUDBase[Demo01Model, Demo01CreateSchema, Demo01UpdateSchema]):
         - ids (list[int]): 示例ID列表
         - status (str): 可用状态
 
-        返回:   
+        返回:
         - None
         """
         return await self.set(ids=ids, status=status)

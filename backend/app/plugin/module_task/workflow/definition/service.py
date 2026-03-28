@@ -4,9 +4,9 @@ from typing import Any
 from app.api.v1.module_system.auth.schema import AuthSchema
 from app.core.exceptions import CustomException
 
-from ..node.crud import NodeCRUD
+from ..engine.prefect_engine import run_prefect_workflow_sync, utc_now_iso, validate_workflow_graph
+from ..node_type.crud import WorkflowNodeTypeCRUD
 from .crud import WorkflowCRUD
-from .prefect_engine import run_prefect_workflow_sync, utc_now_iso, validate_workflow_graph
 from .schema import (
     WorkflowCreateSchema,
     WorkflowExecuteResultSchema,
@@ -125,11 +125,11 @@ class WorkflowService:
         codes = {n.get("type") for n in nodes if n.get("type")}
         templates: dict[str, dict[str, Any]] = {}
         for code in codes:
-            node_type = await NodeCRUD(auth).get(code=code)
+            node_type = await WorkflowNodeTypeCRUD(auth).get(code=code)
             if not node_type:
-                raise CustomException(msg=f"节点类型未注册: {code}")
+                raise CustomException(msg=f"编排节点类型未注册（请在「工作流编排节点类型」中维护，非定时任务节点）: {code}")
             if not node_type.func or not str(node_type.func).strip():
-                raise CustomException(msg=f"节点类型未配置 func 代码块: {code}")
+                raise CustomException(msg=f"编排节点类型未配置 func 代码块: {code}")
             templates[code] = {
                 "func": node_type.func,
                 "args": node_type.args,

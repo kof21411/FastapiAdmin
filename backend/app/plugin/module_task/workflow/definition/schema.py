@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from fastapi import Query
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -6,9 +6,6 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from app.common.enums import QueueEnum
 from app.core.base_schema import UserBySchema
 from app.core.validator import DateTimeStr
-
-if TYPE_CHECKING:
-    from .model import WorkflowModel
 
 
 class WorkflowCreateSchema(BaseModel):

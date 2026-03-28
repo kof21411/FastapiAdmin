@@ -118,8 +118,8 @@
 
 // ==================== 全局原生滚动条（与主题主色混色，Firefox + WebKit） ====================
 * {
-  scrollbar-width: thin;
   scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track);
+  scrollbar-width: thin;
 }
 
 *::-webkit-scrollbar {

@@ -53,19 +53,35 @@ html :root {
   /* 全局原生滚动条：轨道浅底 + 滑块混主色（随 theme.ts / --el-color-primary 变） */
   --app-scrollbar-track: color-mix(in srgb, var(--el-color-primary, #4080ff) 5%, #eef2f7 95%);
   --app-scrollbar-thumb: color-mix(in srgb, var(--el-color-primary, #4080ff) 35%, #bcc8d4 65%);
-  --app-scrollbar-thumb-hover: color-mix(in srgb, var(--el-color-primary, #4080ff) 48%, #94a3b8 52%);
+  --app-scrollbar-thumb-hover: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 48%,
+    #94a3b8 52%
+  );
 
   /*
    * 表格：表头 / 斑马 / 行悬停 — 同一主色，深浅分层（亮底；整体偏浅、主色占比低）
    * 表头略深 → 悬停中等 → 斑马最浅
    */
   --el-table-theme-header-bg: color-mix(in srgb, var(--el-color-primary, #4080ff) 8%, #f4f6f9 92%);
-  --el-table-theme-hover-bg: color-mix(in srgb, var(--el-color-primary, #4080ff) 5.5%, var(--el-bg-color-overlay) 94.5%);
-  --el-table-theme-stripe-bg: color-mix(in srgb, var(--el-color-primary, #4080ff) 3%, var(--el-bg-color-overlay) 97%);
+  --el-table-theme-hover-bg: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 5.5%,
+    var(--el-bg-color-overlay) 94.5%
+  );
+  --el-table-theme-stripe-bg: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 3%,
+    var(--el-bg-color-overlay) 97%
+  );
   /*
    * 表格线：浅灰为主、主色极淡，避免格线抢眼（接近分割线「若有若无」）
    */
-  --el-table-theme-border-color: color-mix(in srgb, var(--el-color-primary, #4080ff) 4.5%, #eef2f7 95.5%);
+  --el-table-theme-border-color: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 4.5%,
+    #eef2f7 95.5%
+  );
 
   /* 画布/分割线交给 Element Plus：不再维护 layout-* 混色变量 */
 
@@ -128,21 +144,41 @@ html.dark {
   --el-overlay-color-lighter: rgba(0, 0, 0, 0.3);
 
   /* 菜单 hover 兼容 */
-  --el-menu-hover-bg-color: color-mix(in srgb, var(--el-color-primary, #4080ff) 9.5%, #1b2a45 90.5%);
+  --el-menu-hover-bg-color: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 9.5%,
+    #1b2a45 90.5%
+  );
 
   /* 暗色全局滚动条：与主内容区协调，滑块略柔 */
   --app-scrollbar-track: color-mix(in srgb, var(--el-color-primary, #4080ff) 7.5%, #0f172a 92.5%);
   --app-scrollbar-thumb: color-mix(in srgb, var(--el-color-primary, #4080ff) 33%, #475569 67%);
-  --app-scrollbar-thumb-hover: color-mix(in srgb, var(--el-color-primary, #4080ff) 46%, #64748b 54%);
+  --app-scrollbar-thumb-hover: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 46%,
+    #64748b 54%
+  );
 
   /*
    * 表格：暗底整体偏浅一档，主色占比降低，更接近面板底 --el-bg-color-overlay
    */
   --el-table-theme-header-bg: color-mix(in srgb, var(--el-color-primary, #4080ff) 11%, #243044 89%);
-  --el-table-theme-hover-bg: color-mix(in srgb, var(--el-color-primary, #4080ff) 7.5%, var(--el-bg-color-overlay) 92.5%);
-  --el-table-theme-stripe-bg: color-mix(in srgb, var(--el-color-primary, #4080ff) 4%, var(--el-bg-color-overlay) 96%);
+  --el-table-theme-hover-bg: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 7.5%,
+    var(--el-bg-color-overlay) 92.5%
+  );
+  --el-table-theme-stripe-bg: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 4%,
+    var(--el-bg-color-overlay) 96%
+  );
   /* 表格线：暗色下偏柔，与 overlay 接近、略亮一线即可辨认 */
-  --el-table-theme-border-color: color-mix(in srgb, var(--el-color-primary, #4080ff) 9%, #3d4f63 91%);
+  --el-table-theme-border-color: color-mix(
+    in srgb,
+    var(--el-color-primary, #4080ff) 9%,
+    #3d4f63 91%
+  );
 
   /* 画布/分割线/Tags hover 不再维护 layout-* 混色变量 */
 

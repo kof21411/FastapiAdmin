@@ -12,7 +12,7 @@ from pydantic import (
 
 from app.common.enums import QueueEnum
 from app.core.base_schema import BaseSchema, UserBySchema
-from app.core.validator import DateStr, DateTimeStr, TimeStr
+from app.core.validator import DateTimeStr
 
 
 class Demo01CreateSchema(BaseModel):

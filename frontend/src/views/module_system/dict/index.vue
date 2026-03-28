@@ -142,7 +142,7 @@
                   type="warning"
                   size="small"
                   link
-                  icon="View"
+                  icon="Document"
                   @click="handleDictDataDrawer(scope.row)"
                 >
                   字典

@@ -1,5 +1,3 @@
-import enum
-from datetime import date, datetime, time
 
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
@@ -18,4 +16,3 @@ class Demo01Model(ModelMixin, UserMixin):
 
     # 字符串类型
     name: Mapped[str] = mapped_column(String(64), nullable=False, comment="名称")
-

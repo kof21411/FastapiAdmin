@@ -1,8 +1,8 @@
 """
 将 Vue Flow 画布（nodes/edges）转为 DAG，按拓扑顺序用 Prefect 编排执行。
 
-与现有「节点类型」表一致：每个节点 `type` 对应 task_node.code，执行时取 `func` 代码块，
-通过 SchedulerUtil._task_wrapper 执行（与 APScheduler 节点调试一致）。
+画布节点 `type` 对应表 task_workflow_node_type.code（与定时任务 task_node 无关），
+执行时加载该类型的 `func` 代码块，经 SchedulerUtil._task_wrapper 运行。
 """
 
 from __future__ import annotations
@@ -41,7 +41,7 @@ def validate_workflow_graph(nodes: list[dict], edges: list[dict]) -> None:
     for e in edges:
         if e.get("source") not in ids or e.get("target") not in ids:
             raise ValueError("连线引用了不存在的节点")
-    in_degree: dict[str, int] = {nid: 0 for nid in ids}
+    in_degree: dict[str, int] = dict.fromkeys(ids, 0)
     adj: dict[str, list[str]] = defaultdict(list)
     for e in edges:
         adj[e["source"]].append(e["target"])
@@ -104,7 +104,7 @@ def run_workflow_prefect_flow(
     flow_variables: dict[str, Any],
 ) -> dict[str, Any]:
     """
-    node_templates: code -> {func, args, kwargs} 来自 task_node
+    node_templates: code -> {func, args, kwargs} 来自 task_workflow_node_type
     """
     results: dict[str, Any] = {}
     for node in ordered_nodes:

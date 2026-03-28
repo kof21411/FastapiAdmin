@@ -43,7 +43,7 @@
               <template #default="scope">
                 <el-space class="flex">
                   <el-button
-                    v-hasPerm="['module_task:node:execute']"
+                    v-hasPerm="['module_task:cronjob:node:execute']"
                     type="warning"
                     size="small"
                     link
@@ -53,7 +53,7 @@
                     调试
                   </el-button>
                   <el-button
-                    v-hasPerm="['module_task:node:update']"
+                    v-hasPerm="['module_task:cronjob:node:update']"
                     type="primary"
                     size="small"
                     link
@@ -63,7 +63,7 @@
                     编辑
                   </el-button>
                   <el-button
-                    v-hasPerm="['module_task:node:delete']"
+                    v-hasPerm="['module_task:cronjob:node:delete']"
                     type="danger"
                     size="small"
                     link
@@ -342,7 +342,12 @@ defineOptions({
   inheritAttrs: false,
 });
 
-import NodeAPI, { NodeTable, NodeForm, NodePageQuery, TriggerType } from "@/api/module_task/node";
+import NodeAPI, {
+  NodeTable,
+  NodeForm,
+  NodePageQuery,
+  TriggerType,
+} from "@/api/module_task/cronjob/node";
 import { useDictStore } from "@/store/index";
 import PageSearch from "@/components/CURD/PageSearch.vue";
 import PageContent from "@/components/CURD/PageContent.vue";
@@ -382,7 +387,7 @@ const openInterval = ref(false);
 const codeEditorRef = ref<CmComponentRef>();
 
 const searchConfig = reactive<ISearchConfig>({
-  permPrefix: "module_task:node",
+  permPrefix: "module_task:cronjob:node",
   colon: true,
   isExpandable: false,
   showNumber: 2,
@@ -405,7 +410,7 @@ const searchConfig = reactive<ISearchConfig>({
 });
 
 const contentConfig = reactive<IContentConfig<NodePageQuery>>({
-  permPrefix: "module_task:node",
+  permPrefix: "module_task:cronjob:node",
   cols: [],
   hideColumnFilter: true,
   toolbar: ["add", "delete"],
@@ -450,7 +455,7 @@ const defaultCodeBlock = `def handler(*args, **kwargs):
     """
     
     # 从工程中导入方法
-    from app.plugin.module_task.node.handlers.demo_handler import (
+    from app.plugin.module_task.cronjob.node.handlers.demo_handler import (
         demo_handler,
         process_data
     )
