@@ -501,8 +501,8 @@ async function handleSubmit() {
   }
 
   :deep(.el-card__footer) {
-    margin-top: auto;
     padding: 10px 14px 14px;
+    margin-top: auto;
   }
 }
 
@@ -515,13 +515,13 @@ async function handleSubmit() {
 
 .app-name {
   flex: 1;
+  min-width: 0;
   margin: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 15px;
   font-weight: 600;
   white-space: nowrap;
-  min-width: 0;
 }
 
 .app-status {
@@ -530,17 +530,17 @@ async function handleSubmit() {
 
 .card-footer-row {
   display: flex;
+  gap: 12px;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   min-height: 28px;
 }
 
 .card-actions {
   display: inline-flex;
   flex-shrink: 0;
-  align-items: center;
   gap: 0;
+  align-items: center;
 }
 
 .app-description {
@@ -560,10 +560,10 @@ async function handleSubmit() {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
   font-size: 12px;
   line-height: 1.4;
   color: var(--el-text-color-placeholder);
+  white-space: nowrap;
 }
 
 @media (max-width: 480px) {
@@ -579,8 +579,8 @@ async function handleSubmit() {
 
   .card-meta {
     flex: 1 1 100%;
-    white-space: normal;
     word-break: break-all;
+    white-space: normal;
   }
 
   .card-actions {

@@ -558,8 +558,8 @@ onUnmounted(() => {
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-height: 0;
   width: 100%;
+  min-height: 0;
 
   :deep(.el-tabs__header) {
     flex-shrink: 0;
@@ -582,10 +582,10 @@ onUnmounted(() => {
 }
 
 .monitor-tab {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-sizing: border-box;
   height: 100%;
   min-height: 0;
 }
@@ -604,8 +604,8 @@ onUnmounted(() => {
 
 .cache-chart-card {
   display: flex;
-  flex-direction: column;
   flex: 1;
+  flex-direction: column;
   min-height: 0;
 
   :deep(.el-card__body) {
@@ -618,14 +618,14 @@ onUnmounted(() => {
 
 .chart-container {
   flex: 1;
-  min-height: 200px;
   height: 100%;
+  min-height: 200px;
 }
 
 .cache-mgmt-tab {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   height: 100%;
   min-height: 0;
 }

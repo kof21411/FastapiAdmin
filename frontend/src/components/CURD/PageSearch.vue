@@ -346,19 +346,19 @@ defineExpose({
 .curd-page-search--flex {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  align-content: flex-start;
-  justify-content: flex-start;
   gap: 1rem;
+  align-content: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   width: 100%;
   min-height: 0;
 }
 
 .curd-page-search--grid {
   display: grid !important;
-  width: 100%;
-  gap: 1rem;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
   align-items: center;
+  width: 100%;
 }
 </style>

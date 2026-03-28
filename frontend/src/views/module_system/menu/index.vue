@@ -107,8 +107,18 @@
               show-overflow-tooltip
               min-width="220"
             />
-            <el-table-column label="路由名称" prop="route_name" min-width="200" />
-            <el-table-column label="路由路径" prop="route_path" min-width="200" />
+            <el-table-column
+              label="路由名称"
+              prop="route_name"
+              show-overflow-toolti
+              min-width="200"
+            />
+            <el-table-column
+              label="路由路径"
+              prop="route_path"
+              show-overflow-tooltip
+              min-width="200"
+            />
             <el-table-column
               label="组件路径"
               prop="component_path"

@@ -902,8 +902,8 @@ async function fetchWorkplaceStats() {
 /* 与上方模块区隔离，两行 ops 之间固定间距，避免与下方栅格视觉「叠在一起」 */
 .workplace-ops-stack {
   display: flex;
-  flex-direction: column;
   flex-shrink: 0;
+  flex-direction: column;
   gap: 16px;
   width: 100%;
 }
@@ -1169,8 +1169,8 @@ async function fetchWorkplaceStats() {
   flex: 1;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  min-height: 0;
   align-content: start;
+  min-height: 0;
 }
 
 @media (width >= 1400px) {
@@ -1746,9 +1746,9 @@ async function fetchWorkplaceStats() {
 /* 与 --hub-row-h 对齐，保证每排高度一致 */
 .workplace-quick-list--hub .workplace-quick-row--compact {
   box-sizing: border-box;
+  gap: 4px;
   height: 100%;
   min-height: 0;
-  gap: 4px;
   padding: 4px 4px 4px 2px;
 }
 
