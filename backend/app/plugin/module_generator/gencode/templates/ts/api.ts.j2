@@ -1,6 +1,12 @@
 import request from "@/utils/request";
 
+{% if is_example_style %}
+// module_example 约定：API 路径 /example/{模块}/{业务?}（与 module_example 示例一致）
+const API_PATH = "/{{ api_route_prefix }}/{{ module_name }}{% if business_name %}/{{ business_name|lower }}{% endif %}";
+{% else %}
+// 旧约定：discover 中 module_xxx → 前缀 /{{ api_route_prefix }}
 const API_PATH = "/{{ api_route_prefix }}/{{ business_name|lower }}";
+{% endif %}
 
 const {{ class_name }}API = {
   // 列表查询
@@ -110,8 +116,11 @@ export interface {{ class_name }}PageQuery extends PageQuery {
 
 // 列表展示项
 export interface {{ class_name }}Table extends BaseType {
+  {% if pk_column_name != 'id' and pk_column %}
+  {{ pk_column_name }}?: {{ pk_column.python_type | python_to_ts_type }};
+  {% endif %}
   {% for column in columns %}
-  {% if column.column_name not in ['id', 'uuid', 'status', 'description', 'created_time', 'updated_time'] %}
+  {% if column.column_name not in ['id', 'uuid', 'status', 'description', 'created_time', 'updated_time'] and column.column_name != pk_column_name %}
   {{ column.column_name }}?: {{ column.python_type | python_to_ts_type }};
   {% endif %}
   {% endfor %}
@@ -121,8 +130,11 @@ export interface {{ class_name }}Table extends BaseType {
 
 // 新增/修改/详情表单参数
 export interface {{ class_name }}Form extends BaseFormType {
+  {% if pk_column_name != 'id' and pk_column %}
+  {{ pk_column_name }}?: {{ pk_column.python_type | python_to_ts_type }};
+  {% endif %}
   {% for column in columns %}
-  {% if (column.is_insert or column.is_edit) and column.column_name not in ['id', 'uuid', 'status', 'description', 'created_time', 'updated_time', 'created_id', 'updated_id'] %}
+  {% if (column.is_insert or column.is_edit) and column.column_name not in ['uuid', 'status', 'description', 'created_time', 'updated_time', 'created_id', 'updated_id'] and column.column_name != pk_column_name %}
   {{ column.column_name }}?: {{ column.python_type | python_to_ts_type }};
   {% endif %}
   {% endfor %}
